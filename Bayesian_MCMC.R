@@ -1,7 +1,6 @@
 ########################### Metropolis-Hastings MCMC - linear regression Bayesian example
 ### from: https://theoreticalecology.wordpress.com/2010/09/17/metropolis-hastings-mcmc-in-r/
 
-set.seed(11111)
 ### Fabricate the sample data
 true_slope <- 5
 true_intercept <- 0
@@ -16,7 +15,6 @@ set.seed(11111)
 y <-  true_slope * x + true_intercept + rnorm(n = sample_size,
                                               mean = 0,
                                               sd = true_sd)
-
 
 # Calculator of the likelihood function assuming linearity
 # param is an array of [slope, intercept, st_deviation]
@@ -47,7 +45,6 @@ sd_likelihoods <- lapply(seq(5, 25, by = 0.05), sd_values)
 
 ## Prior distribution
 # note that we're getting the logarithms to avoid too small numbers multiplications
-
 prior <- function(param){
   # change the names of the parameters
   slope <- param[1]
@@ -57,7 +54,7 @@ prior <- function(param){
   # slope prior distribution is assumed uniform between 0 and 10
   slope_prior <- dunif(slope,
                        min = 0,
-                       max = 20,
+                       max = 10,
                        log = TRUE)
 
   # intercept prior distribution is assumed normal with stdev 5
@@ -79,9 +76,6 @@ prior <- function(param){
 posterior <- function(param){
   return (likelihood(param) + prior(param))
 }
-
-
-
 
 
 ######## Metropolis algorithm ################
@@ -118,15 +112,13 @@ run_metropolis_MCMC <- function(start_value, iterations) {
 start_value <- c(4, 0.5, 9)
 chain <- run_metropolis_MCMC(start_value, 10000)
 
-burnIn <- 10000
+burnIn <- 5000
 acceptance <- 1 - mean(duplicated(chain[-(1:burnIn), ]))
 
 
-
 ### Summary: #######################
-
 par(mfrow = c(2,3))
-hist(chain[-(1:burnIn),1],nclass=30, , main="Posterior slope", xlab="True value = red line" )
+hist(chain[-(1:burnIn),1],nclass=30, , main="Posterior slope", xlab="True value = red line")
 abline(v = mean(chain[-(1:burnIn),1]))
 abline(v = true_slope, col="red" )
 hist(chain[-(1:burnIn),2],nclass=30, main="Posterior intercept", xlab="True value = red line")
@@ -145,7 +137,7 @@ abline(h = true_sd, col="red" )
 # for comparison:
 summary(lm(y~x))
 mean(chain[,1])
-paste("true slope: ", true_slope)
+cat(paste("true slope: ", true_slope, "\n", "true"))
 
 mean(chain[,2])
 paste("true intercept: ", true_intercept)

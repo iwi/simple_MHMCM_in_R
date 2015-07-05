@@ -14,7 +14,8 @@ sample_size <- 50
 # create independent x-values
 x <- (-(sample_size-1)/2):((sample_size-1)/2)
 
-# create dependent values according to ax + b + N(0,sd)
+# create dependent values according to
+# true_slope * x + true_intercept + N(0,sd)
 set.seed(11111)
 y <-  true_slope * x + true_intercept + rnorm(n = sample_size,
                                               mean = 0,
@@ -71,4 +72,3 @@ paste("true intercept: ", true_intercept)
 
 mean(chain[-(1:burnIn), 3])
 paste("true sd: ", true_sd)
-

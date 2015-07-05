@@ -3,10 +3,11 @@
 ### from: https://theoreticalecology.wordpress.com/2010/09/17/metropolis-hastings-mcmc-in-r/
 #
 
-#' Calculator of the likelihood function assuming linearity
-#' @param is an array of [slope, intercept, st_deviation]
-
-likelihood <- function(param) {
+#' Calculator of the likelihood function assuming linearity.
+#'
+#' @param param [array] Composed by slope, intercept, st_deviation
+#' @return sum_likelihoods [number]
+likelihood <- function (param) {
   slope <- param[1]
   intercept <- param[2]
   sd <- param[3]
@@ -17,14 +18,17 @@ likelihood <- function(param) {
                               sd = sd,
                               log = TRUE)
   sum_likelihoods <- sum(single_likelihoods)  # We can sum them because they're logs
+
   return(sum_likelihoods)
 }
 
-#' Prior distribution
-#' note that we're getting the logarithms to avoid too small numbers multiplications
-#' @param is an array of [slope, intercept, st_deviation]
-
-prior <- function(param){
+#' Prior distribution.
+#' note that we're getting the logarithms to avoid too small numbers
+#' multiplications.
+#'
+#' @param param [array] Composed by slope, intercept, st_deviation
+#' @return [number]
+prior <- function (param) {
   # change the names of the parameters
   slope <- param[1]
   intercept <- param[2]
@@ -51,21 +55,20 @@ prior <- function(param){
 }
 
 
-## Posterior distribution
-#' @param is an array of [slope, intercept, st_deviation]
-
-#' It returns a Real.
+#' Posterior distribution.
 #' P(B) in P(A|B) = P(B|A)P(A)/P(B) is omitted
 #' I'm assuming this is because we're using the ratio of P(A|B) and P(A'|B) and
 #' P(B)s cancel each other.
-
-posterior <- function(param) {
+#'
+#' @param param [array] Composed by slope, intercept, st_deviation
+#' @return [number] Returns a Real.
+posterior <- function (param) {
   return (likelihood(param) + prior(param))
 }
 
 
-######## Metropolis algorithm ################
-proposal_function <- function(param) {
+#' Metropolis algorithm
+proposal_function <- function (param) {
   # define the standard deviation of the parameters' jump
   slope_sd <- 0.1
   intercept_sd <- 0.5
@@ -96,7 +99,7 @@ run_metropolis_MCMC <- function(start_value,
   return(chain)
 }
 
-### Summary: #######################
+#' Summary
 summary_plot <- function(chain,
                          burnIn,
                          true_slope,

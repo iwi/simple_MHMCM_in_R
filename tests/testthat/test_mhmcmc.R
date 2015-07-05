@@ -1,7 +1,6 @@
-# suite of tests for the Metropolis-Hastings MCMC functions
-# detailed_MHMCMC_functions.R
+# Suite of tests for the Metropolis-Hastings MCMC functions
 
-context("basic tests")
+context("mhmcmc.R")
 
 describe("likelihood", {
   it("should return a numeric outcome", {

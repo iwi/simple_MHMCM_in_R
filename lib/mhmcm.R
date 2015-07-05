@@ -7,7 +7,9 @@
 #'
 #' @param param [array] Composed by slope, intercept, st_deviation
 #' @return sum_likelihoods [number]
-likelihood <- function (param) {
+likelihood <- function (param,
+                        y,
+                        x) {
   slope <- param[1]
   intercept <- param[2]
   sd <- param[3]
@@ -63,7 +65,7 @@ prior <- function (param) {
 #' @param param [array] Composed by slope, intercept, st_deviation
 #' @return [number] Returns a Real.
 posterior <- function (param) {
-  return (likelihood(param) + prior(param))
+  return (likelihood(param, y, x) + prior(param))
 }
 
 

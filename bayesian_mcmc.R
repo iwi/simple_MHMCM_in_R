@@ -2,7 +2,7 @@
 # from:
 # https://theoreticalecology.wordpress.com/2010/09/17/metropolis-hastings-mcmc-in-r/
 
-source("./lib/mhmcmc.R")
+source("./lib/mhmcm.R")
 
 ### Fabricate the sample data
 true_slope <- 5
@@ -44,7 +44,9 @@ plot(seq(5, 25, by = 0.05),
 ##########
 
 # Define start value and iterations
-start_value <- c(4, 0.5, 9)
+start_value <- c(slope = 4,
+                 intercept = 0.5,
+                 sd=9)
 number_of_iterations <- 10000
 burnIn <- number_of_iterations / 2
 
@@ -61,10 +63,23 @@ summary_plot(chain,
              true_sd)
 
 # for comparison:
-summary(lm(y~x))
 
-mean(chain[-(1:burnIn), 1])
-cat(paste("true slope: ", true_slope, "\n", "true"))
+freq_lm <- lm(y~x)
+summary(freq_lm)
+str(freq_lm)
+
+cat(" ## slope \n",
+    "true: ", true_slope, "\n",
+    "MH-MCMC: ", mean(chain[-(1:burnIn), 1]), "\n",
+    "lm: ", freq_lm$coefficients[2], "\n",
+    "## intercept \n",
+    "true: ", true_intercept, "\n",
+    "MH-MCMC: ", mean(chain[-(1:burnIn), 1]), "\n",
+    "lm: ", freq_lm$coefficients[1], "\n",
+    "## sd \n",
+    "true", true_sd, "\n",
+    "MH-MCMC: ", mean(chain[-(1:burnIn), 3]), "\n",
+    "lm: ", "\n")
 
 mean(chain[-(1:burnIn), 2])
 paste("true intercept: ", true_intercept)

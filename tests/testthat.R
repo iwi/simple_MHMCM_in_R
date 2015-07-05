@@ -1,3 +1,3 @@
 library(testthat)
-source("detailed_MHMCMC_functions.R")
+source("./lib/mhmcm.R")
 test_dir("tests/testthat", reporter = "summary")

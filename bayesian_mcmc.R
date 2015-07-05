@@ -2,8 +2,7 @@
 # from:
 # https://theoreticalecology.wordpress.com/2010/09/17/metropolis-hastings-mcmc-in-r/
 
-# setwd("~/projectes/aprenc_bayesian_MCMC/simple_MHMCM_in_R/")
-source("detailed_MHMCMC_functions.R")
+source("./lib/mhmcmc.R")
 
 ### Fabricate the sample data
 true_slope <- 5
